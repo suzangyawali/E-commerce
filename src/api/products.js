@@ -11,18 +11,16 @@ const authToken = localStorage.getItem("authToken");
 // };
 
 const getProducts = async ({
-  limit = 20,
-  sort = JSON.stringify({ createdAt: -1 }),
-  filters = {},
+  limit = 10,
+  sort = JSON.stringify({ price: 1 }),
+  filters={},
 }) => {
   // sort: sorting key, sort order (1: ASC, -1: DESC)
   // filterBy: key, value for e.g name: iphone
-  // const query = `limit=${limit}&sort=${sort}&filters=${JSON.stringify(
-  //   filters
-  // )}`;
+  const query = `limit=${limit}&sort=${(sort)}&filters=${JSON.stringify(filters)}`;
 
   // Convert sort to a JSON string within the function
-  const query = `limit=${limit}&sort=${encodeURIComponent(JSON.stringify(sort))}&filters=${encodeURIComponent(JSON.stringify(filters))}`;
+  // const query = `limit=${limit}&sort=${encodeURIComponent(JSON.stringify(sort))}&filters=${encodeURIComponent(JSON.stringify(filters))}`;
   const response = await axios.get(
     `${config.baseApiUrl}/api/products?${query}`
   );
@@ -35,7 +33,10 @@ const getProductsById= async (id)=>{
     return response;
 }
 
-
+const getProductsByCategories= async ()=>{
+  const response = await axios.get(`${config.baseApiUrl}/api/products/categories`);
+  return response;
+}
 const addProduct = async (data) => {
   const response = await axios.post(`${config.baseApiUrl}/api/products`, data, {
     headers: {
@@ -72,4 +73,4 @@ const deleteProduct = async (id) => {
 
   return response;
 };
-export {getProducts,getProductsById,addProduct,editProduct,deleteProduct};
+export {getProducts,getProductsById,addProduct,editProduct,deleteProduct,getProductsByCategories};
